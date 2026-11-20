@@ -1,0 +1,4 @@
+.env
+.venv/
+indicadores.xlsx
+__pycache__/

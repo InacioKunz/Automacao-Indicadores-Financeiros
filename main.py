@@ -1,15 +1,17 @@
+import os
 import requests
 import pandas as pd
 import smtplib
 import ssl
-
+from datetime import datetime
 from email.message import EmailMessage
+from dotenv import load_dotenv
+
+load_dotenv()
 
 response = requests.get('http://127.0.0.1:8000/api/painel/relatorio')
 
 dados = response.json()  # pega o conteúdo JSON como dicionário Python
-
-from datetime import datetime
 
 def formatar_data(texto):
     for formato in ('%Y-%m-%d %H:%M:%S.%f', '%d/%m/%Y'):
@@ -34,16 +36,15 @@ linhas.append(montar_linha('Selic', dados['selic'], 'valor', 'data'))
 linhas.append(montar_linha('IPCA', dados['ipca'], 'valor', 'data'))
 
 indicadores = pd.DataFrame(linhas)
-
-indicadores.to_excel('indicadores.xlsx', index = False)
+indicadores.to_excel('indicadores.xlsx', index=False)
 
 servidor_email = smtplib.SMTP('smtp.gmail.com', 587)
 contexto = ssl.create_default_context()
 servidor_email.starttls(context=contexto)
-servidor_email.login(#Seu email, sua senha)
+servidor_email.login(os.getenv('EMAIL_REMETENTE'), os.getenv('EMAIL_SENHA_APP'))
 
-remetente = #seu email
-destinatarios = [#email que deseja enviar]
+remetente = os.getenv('EMAIL_REMETENTE')
+destinatarios = [os.getenv('EMAIL_DESTINATARIO')]
 
 mensagem = EmailMessage()
 mensagem['Subject'] = "Indicadores"
@@ -63,4 +64,3 @@ mensagem.add_attachment(
 
 servidor_email.send_message(mensagem)
 servidor_email.quit()
-
