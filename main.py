@@ -40,10 +40,10 @@ indicadores.to_excel('indicadores.xlsx', index = False)
 servidor_email = smtplib.SMTP('smtp.gmail.com', 587)
 contexto = ssl.create_default_context()
 servidor_email.starttls(context=contexto)
-servidor_email.login('inacio.kunz.2006@gmail.com', 'jytc arwp wrsq dekq')
+servidor_email.login(#Seu email, sua senha)
 
-remetente = 'inacio.kunz.2006@gmail.com'
-destinatarios = ['inacio.kunz@gmail.com']
+remetente = #seu email
+destinatarios = [#email que deseja enviar]
 
 mensagem = EmailMessage()
 mensagem['Subject'] = "Indicadores"
